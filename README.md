@@ -1,5 +1,3 @@
-To create a **comprehensive `README.md`** that clearly explains your [app.py](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/83300653/06873ca5-adaa-434f-8fd0-04579e0d2c39/app.py) app’s **purpose and usage**, follow this template and flow:
-
 # MCP Automation App
 
 ## Overview
