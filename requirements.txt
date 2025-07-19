@@ -1,0 +1,8 @@
+XlsxWriter
+openpyxl
+pandas
+playwright
+pytest
+python-dotenv
+groq
+streamlit 
