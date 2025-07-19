@@ -1,94 +1,111 @@
-AI-Powered Query Processor
-A Streamlit application for processing natural language queries to search products or flights across e-commerce and travel sites (Amazon, Flipkart, MakeMyTrip) using Groq, OpenAI, or Ollama LLMs. Generates Excel reports with scraped data, charts, and conditional formatting.
-Setup Instructions
-Prerequisites
+To create a **comprehensive `README.md`** that clearly explains your [app.py](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/83300653/06873ca5-adaa-434f-8fd0-04579e0d2c39/app.py) app’s **purpose and usage**, follow this template and flow:
 
-Python 3.10+: Install from python.org.
-Ollama: Install from ollama.com for local LLM inference.
-API Keys:
-Groq: Obtain from console.groq.com.
-OpenAI: Obtain from platform.openai.com.
+# MCP Automation App
+
+## Overview
+
+This application enables users to search and compare products or flight prices across popular e-commerce and travel websites **using natural language queries**.  
+It leverages an LLM (Groq, OpenAI, or Ollama) to parse your query and dynamically generates browser automation (using Playwright) for sites like Amazon and Flipkart. Results are compiled into a visually appealing Excel report for easy viewing and analysis.
+
+## Features
+
+- **Natural language search** (e.g., "Find me laptops under ₹50,000")
+- **LLM-based query interpretation** (Groq, OpenAI, or local Ollama)
+- **Automated browser workflow** (MCP - Micro Command Protocol)
+- **Data extraction** from Amazon, Flipkart, etc.
+- **Excel report output** with highlights and price comparison chart
+- **Logs** for transparency (stored in `logs/`)
+
+## Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/yourrepo.git
+   cd yourrepo
+   ```
+2. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. **Install playwright browsers**
+   ```bash
+   playwright install
+   ```
+4. **Set up LLM API keys/environment**
+   - For Groq: set `GROQ_API_KEY`
+   - For OpenAI: set `OPENAI_API_KEY`
+   - For Ollama: ensure Ollama is running with your desired model
+   - You can use a `.env` file or export in your shell
+
+## Usage
+
+### Basic Example
+
+Edit and run the sample block in `app.py` or integrate as a Python module.
+
+```python
+import asyncio
+from app import QueryProcessor
+
+async def main():
+    processor = QueryProcessor(llm_provider="ollama", ollama_model="llama3")
+    query = "Find me laptops under ₹50,000"
+    result = await processor.process_query(query)
+    print(result)
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+- The generated Excel report will be saved in your working directory.
+
+## Example Queries
+
+- `Find me trimmers under ₹1000`
+- `Compare the prices of iPhone 14 on Amazon and Flipkart`
+- `Search for flights from Delhi to Mumbai for next Friday`
+
+## Output
+
+- **Excel file** with:  
+  - Site, Product Title, Price, Timestamp  
+  - Highlights for best deals  
+  - Embedded bar chart (price comparison)
+- File saved as `query_report_.xlsx`
+
+## How It Works
+
+1. **Parse query:** The LLM returns structured info (`query_type`, sites to search, and product/price data).
+2. **Generate MCP steps:** The app creates a workflow (navigate, scroll, type, etc.) for the target sites.
+3. **Automate browser:** Playwright performs each step, then data is scraped.
+4. **Generate report:** Compile, format, and visualize in Excel.
+
+See [MCP_AUTOMATION.md](MCP_AUTOMATION.md) for technical details of automation command flow.
+
+## Customization & Extensibility
+
+- **Add new sites or workflows:** Update automation and scraping logic per site in `app.py`.
+- **Switch LLMs:** Use `llm_provider` parameter and configure API keys or Ollama model.
+
+## Troubleshooting
+
+- **Missing results:** Check your API keys, Ollama model, or ensure products exist on the sites.
+- **Ollama:** Run `ollama serve` and ensure selected model is pulled.
+- **Logs:** Check `logs/query_processor_*.log` for detailed run info.
+
+## License
+
+MIT License
+
+## Acknowledgments
+
+- [Playwright](https://playwright.dev/python/)
+- [Groq](https://groq.com/)
+- [OpenAI](https://openai.com/)
+- [Ollama](https://ollama.ai/)
+- [openpyxl](https://openpyxl.readthedocs.io/)
+- [pandas](https://pandas.pydata.org/)
+
+**For more technical detail**, see [MCP_AUTOMATION.md](MCP_AUTOMATION.md).
 
 
-
-Installation
-
-Clone or Create Project Directory:
-mkdir query_processor_app
-cd query_processor_app
-
-
-Set Up Virtual Environment:
-python3 -m venv venv
-source venv/bin/activate  # Linux/Mac
-venv\Scripts\activate     # Windows Command Prompt
-.\venv\Scripts\Activate.ps1  # Windows PowerShell
-
-
-Install Dependencies:
-pip install -r requirements.txt
-playwright install
-
-
-Configure API Keys:
-export GROQ_API_KEY="your-groq-api-key"    # Linux/Mac
-export OPENAI_API_KEY="your-openai-api-key"
-set GROQ_API_KEY=your-groq-api-key         # Windows Command Prompt
-set OPENAI_API_KEY=your-openai-api-key
-$env:GROQ_API_KEY="your-groq-api-key"      # Windows PowerShell
-$env:OPENAI_API_KEY="your-openai-api-key"
-
-
-Configure Ollama:
-ollama serve
-ollama pull llama3
-
-
-Project Structure:
-query_processor_app/
-├── src/
-│   ├── query_processor.py
-│   ├── app.py
-├── docs/
-│   ├── README.md
-│   ├── MCP_AUTOMATION.md
-│   ├── WORKFLOW_EXAMPLES.md
-├── logs/
-├── sample_outputs/
-├── requirements.txt
-
-
-
-Usage
-
-Run the Streamlit App:
-streamlit run src/app.py
-
-Open http://localhost:8501 in your browser.
-
-Query the Application:
-
-Select an LLM provider (Groq, OpenAI, Ollama).
-Enter an Ollama model (e.g., llama3) if using Ollama.
-Input a query (e.g., "Find me laptops under ₹50,000", "Flight prices from Delhi to Mumbai on 2025-08-01").
-Click "Search and Generate Report".
-Download the Excel report if successful.
-
-
-Check Logs:
-
-Logs are in logs/streamlit_app.log and logs/query_processor_*.log.
-Example log (2025-07-19 15:09:00 IST):2025-07-19 15:09:00 - INFO - Query parsed successfully: {"query_type": "product_search", ...}
-
-
-
-
-
-Troubleshooting
-
-JSONDecodeError with Ollama: Ensure Ollama version is 0.2.0+ and llama3 is pulled. Check logs for invalid JSON.
-401 Unauthorized: Verify API keys for Groq/OpenAI.
-CancelledError: Ensure proper async cleanup (included in query_processor.py).
-Contact: Share log file contents for support.
-
-Last updated: July 19, 2025, 03:09 PM IST
